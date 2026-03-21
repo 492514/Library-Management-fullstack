@@ -19,7 +19,7 @@ const [error, setError] = useState("")
   }
 
 function getAttendance(){
-    axios.get("http://localhost:3000/api/Attendance")
+    axios.get("https://library-management-fullstack.onrender.com/api/Attendance")
     .then((res)=>{
      const data = res.data.attendanceHistory
      

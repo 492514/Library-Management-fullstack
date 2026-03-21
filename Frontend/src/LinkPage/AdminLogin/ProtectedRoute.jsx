@@ -8,7 +8,7 @@ const [Isauth, setIsauth] = useState(null)
 
 function verifyUser(){
 
-axios.get("http://localhost:3000/api/Admin/verify",{withCredentials: true})
+axios.get("https://library-management-fullstack.onrender.com/api/Admin/verify",{withCredentials: true})
 
 .then((data)=>{
    

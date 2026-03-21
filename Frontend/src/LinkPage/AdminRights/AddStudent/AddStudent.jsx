@@ -22,7 +22,7 @@ const AddStudent = () => {
       return  showError("Fill all Details")
     }
 
-    axios.post("http://localhost:3000/api/register",{
+    axios.post("https://library-management-fullstack.onrender.com/api/register",{
        Name:Name.value,
        FatherName:fatherName.value,
        RollNo:rollNo.value,

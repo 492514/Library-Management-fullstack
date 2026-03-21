@@ -22,7 +22,7 @@ function showError(message){
 }
 
 function getAllStudent(){
- axios.get("http://localhost:3000/api/allusers")
+ axios.get("https://library-management-fullstack.onrender.com/api/allusers")
  .then((res)=>{
   
    setallStudents(res.data.studentFind)
@@ -37,7 +37,7 @@ useEffect(()=>{
 },[])
 
 function getEntryTime(id){
-  axios.post(`http://localhost:3000/api/entry/${id}`)
+  axios.post(`https://library-management-fullstack.onrender.com/api/entry/${id}`)
     .then((res)=>{
       
      
@@ -59,7 +59,7 @@ function getEntryTime(id){
 }
 
 function getExitTime(id){
-axios.post(`http://localhost:3000/api/exit/${id}`)
+axios.post(`https://library-management-fullstack.onrender.com/api/exit/${id}`)
    .then((res)=>{
    
      

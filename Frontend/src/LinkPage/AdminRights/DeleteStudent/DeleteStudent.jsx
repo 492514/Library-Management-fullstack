@@ -20,7 +20,7 @@ const DeleteStudent = () => {
 }
 
 function getAllStudent(){
-  axios.get("http://localhost:3000/api/allusers")
+  axios.get("https://library-management-fullstack.onrender.com/api/allusers")
   .then(({data})=>{
     setallStudents(data.studentFind)
    
@@ -33,7 +33,7 @@ useEffect(()=>{
 
 function DeleteStudent(){
   
-    axios.delete(`http://localhost:3000/api/remove-user/${selectId}`)
+    axios.delete(`https://library-management-fullstack.onrender.com/api/remove-user/${selectId}`)
         .then((res)=>{
           
          setallStudents( prev =>
