@@ -216,8 +216,8 @@ authRoutes.get("/Attendance", async(req,res) =>{
 authRoutes.post("/Admin/login", async(req,res)=>{
 try{
     const {email,password} = req.body
-    const fixEmail = process.env.fixEmail
-    const fixPassword = process.env.fixPassword
+    const fixEmail = process.env.fix_Email
+    const fixPassword = process.env.fix_Password
 
     if(email !== fixEmail){
       return res.status(400).json({
