@@ -1,0 +1,226 @@
+import  { useContext } from 'react'
+import axios from 'axios'
+import styles from "../Student/Student.module.css"
+import { useState } from 'react'
+import { useEffect } from 'react'
+
+const Studentdashboard = () => {
+
+ 
+
+const [allStudents, setallStudents] = useState([])
+const [error,setError] = useState("")
+const [searchStd, setsearchStd] = useState("")
+const [filterStd, setfilterStd] = useState([])
+
+function showError(message){
+  setError(message)
+
+  setTimeout(()=>{
+    setError("")
+  },3000)
+}
+
+function getAllStudent(){
+ axios.get("http://localhost:3000/api/allusers")
+ .then((res)=>{
+  
+   setallStudents(res.data.studentFind)
+ })
+ .catch((err)=>{
+   console.log(err)
+ })
+}
+
+useEffect(()=>{
+  getAllStudent()
+},[])
+
+function getEntryTime(id){
+  axios.post(`http://localhost:3000/api/entry/${id}`)
+    .then((res)=>{
+      
+     
+      const newEntryTime = res.data.attendance.entryTime
+      
+      setallStudents((prev) =>
+        prev.map((student) =>
+          student._id === id
+            ? { ...student, entryTime: newEntryTime }
+            : student
+        )
+      )
+       showError(res.data.message)
+       setsearchStd("")
+    })
+    .catch((err)=>{
+      showError(err.response?.data?.message || err.message)
+    })
+}
+
+function getExitTime(id){
+axios.post(`http://localhost:3000/api/exit/${id}`)
+   .then((res)=>{
+   
+     
+      const newExitTime = res.data.attendance.exitTime
+
+      setallStudents((prev) =>
+        prev.map((student) =>
+          student._id === id
+            ? { ...student, exitTime: newExitTime }
+            : student
+        )
+      )
+      showError(res.data.message)
+      setsearchStd("")
+    })
+    .catch((err)=>{
+      showError(err.response?.data?.message || err.message)
+    })
+}
+
+function formatTime(time) {
+  if (!time) return ""
+  return new Date(time).toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit"
+  })
+}
+
+function SearchRollNo(value){
+if(value === ""){
+  setfilterStd([])
+  return 
+}
+  const result = allStudents.filter((student)=>{
+   return student.RollNo.toString() === value
+   
+  })
+  
+  setfilterStd(result)
+  
+}
+
+
+
+return (
+  <div className={styles.container}>
+    <input
+      type="text"
+      placeholder="Search"
+      
+      onChange={(e) => {
+       
+        setsearchStd(e.target.value)
+        SearchRollNo(e.target.value)
+      }}
+      value={searchStd}
+    />
+
+    <table className={styles.studentTable}>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Roll No</th>
+          <th>Entry</th>
+          <th>Exit</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {error && (
+          <tr>
+            <td colSpan="4">
+              <div className={styles.error}>{error}</div>
+            </td>
+          </tr>
+        )}
+
+        {searchStd === "" ? (
+          
+          allStudents.map((student) => (
+            <tr key={student._id}>
+              <td>{student.Name}</td>
+              <td>{student.RollNo}</td>
+              <td>
+                {student.entryTime ? (
+                  formatTime(student.entryTime)
+                ) : (
+                  <button
+                    className={styles.entryBtn}
+                    onClick={() => {
+                      
+                      getEntryTime(student._id)
+                    }}
+                  >
+                    Entry
+                  </button>
+                )}
+              </td>
+              <td>
+                {student.entryTime && student.exitTime ? (
+                  formatTime(student.exitTime)
+                ) : (
+                  <button
+                    className={styles.exitBtn}
+                    onClick={() => {
+                      getExitTime(student._id)
+                    }}
+                  >
+                    Exit
+                  </button>
+                )}
+              </td>
+            </tr>
+          ))
+        ) : filterStd.length ? (
+          filterStd.map((student) => (
+            <tr key={student._id}>
+              <td>{student.Name}</td>
+              <td>{student.RollNo}</td>
+              <td>
+                {student.entryTime ? (
+                  formatTime(student.entryTime)
+                ) : (
+                  <button
+                    className={styles.entryBtn}
+                    onClick={() => {
+                      getEntryTime(student._id)
+                    }}
+                  >
+                    Entry
+                  </button>
+                )}
+              </td>
+              <td>
+                {student.entryTime && student.exitTime ? (
+                  formatTime(student.exitTime)
+                ) : (
+                  <button
+                    className={styles.exitBtn}
+                    onClick={() => {
+                      getExitTime(student._id)
+                    }}
+                  >
+                    Exit
+                  </button>
+                )}
+              </td>
+            </tr>
+          ))
+        ) : (
+          <tr>
+            <td colSpan="4">Student Not Exist</td>
+          </tr>
+        )}
+      </tbody>
+    </table>
+  </div>
+)
+
+
+}
+
+
+export default Studentdashboard

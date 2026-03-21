@@ -1,0 +1,132 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,body{
+   background: linear-gradient(135deg, #dbeafe, #eff6ff, #ffffff);
+}
+
+.container{
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+   background: linear-gradient(135deg, #dbeafe, #eff6ff, #ffffff);
+}
+
+.container input{
+  width: 100%;
+  max-width: 350px;
+  padding: 12px 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  font-size: 16px;
+  font-weight: 500;
+  transition: 0.3s ease;
+}
+
+.container input:focus{
+   border-color: #2563eb;
+   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.studentTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.studentTable thead {
+  background-color: #14389a;
+  color: white;
+}
+
+.studentTable th,
+.studentTable td {
+  border: 1px solid #000000;
+  padding: 12px 15px;
+  text-align: center;
+}
+
+.studentTable tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.studentTable tbody tr:hover {
+  background-color: #eaf4ff;
+  transition: 0.3s;
+}
+
+.studentTable td {
+  font-size: 15px;
+  color: #333;
+}
+
+.studentTable th {
+  font-size: 16px;
+  font-weight: 600;
+}
+.entryBtn{
+  background:#4cdd2f;
+  border:none;
+  padding:6px 10px;
+  border-radius:6px;
+  cursor:pointer;
+  font-size:16px;
+  color:white;
+  transition:0.25s;
+}
+
+.entryBtn:hover{
+  background:#3f7b1c;
+  transform:scale(1.05);
+}
+
+.exitBtn{
+  background:#dc2c2c;
+  border:none;
+  padding:6px 10px;
+  border-radius:6px;
+  cursor:pointer;
+  font-size:16px;
+  color:white;
+  transition:0.25s;
+}
+
+.exitBtn:hover{
+  background:#cc040e;
+  transform:scale(1.05);
+}
+
+.error{
+  position: fixed;
+  top: 10px;
+  display: flex;
+  align-items: center;
+  background: #ffffffde;
+  color: rgb(16, 63, 133);
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-weight: 700;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

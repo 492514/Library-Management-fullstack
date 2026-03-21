@@ -1,0 +1,147 @@
+.Container {
+  min-height: 100vh;
+  width: 100%;
+  background: linear-gradient(135deg, #dbeafe, #eff6ff, #ffffff);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.Container p {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1e3a8a;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.Container form {
+  width: 100%;
+  max-width: 380px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 24px 20px;
+  border-radius: 18px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(6px);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.Container input {
+  width: 100%;
+  padding: 14px 14px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 12px;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
+  background-color: #f8fafc;
+}
+
+.Container input:focus {
+  border-color: #2563eb;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.Container input::placeholder {
+  color: #64748b;
+}
+
+.Container button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.Container button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.3);
+}
+
+.Container button:active {
+  transform: scale(0.98);
+}
+
+.error{
+  position: fixed;
+  top: 20px;
+  right: 50px;
+  background: #1e3a8a;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+  .Container p {
+    font-size: 2.2rem;
+    margin-bottom: 24px;
+  }
+
+  .Container form {
+    max-width: 430px;
+    padding: 32px 28px;
+    border-radius: 22px;
+  }
+
+  .Container input {
+    padding: 15px 16px;
+    font-size: 1.05rem;
+  }
+
+  .Container button {
+    padding: 15px;
+    font-size: 1.05rem;
+  }
+}
+
+/* Laptop / Desktop */
+@media (min-width: 1024px) {
+  .Container {
+    padding: 40px;
+  }
+
+  .Container p {
+    font-size: 2.5rem;
+    margin-bottom: 28px;
+  }
+
+  .Container form {
+    max-width: 460px;
+    padding: 36px 30px;
+  }
+
+  .Container input {
+    font-size: 1.08rem;
+  }
+
+  .Container button {
+    font-size: 1.08rem;
+  }
+}
