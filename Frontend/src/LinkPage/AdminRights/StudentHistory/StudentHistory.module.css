@@ -1,3 +1,15 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,body{
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+   background: linear-gradient(135deg, #dbeafe, #eff6ff, #ffffff);
+}
+
+
 .historyContainer {
   width: 90%;
   max-width: 900px;
@@ -63,23 +75,24 @@
   background: linear-gradient(135deg, #0069d9, #004ab8);
 }
 
-/* Smooth accordion wrapper */
+
 .tableWrapper {
-  overflow: hidden;
+  overflow: auto;
   transition: max-height 0.45s ease, opacity 0.35s ease, padding 0.35s ease;
   background: #fff;
+  
 }
 
-/* Closed state */
+
 .closed {
   max-height: 0;
   opacity: 0;
   padding: 0 16px;
 }
 
-/* Open state */
+
 .open {
-  max-height: 500px; /* enough height for table */
+  max-height: 500px; 
   opacity: 1;
   padding: 16px;
 }
@@ -92,6 +105,7 @@
 }
 
 .historyTable thead {
+ 
   background: #eef5ff;
 }
 

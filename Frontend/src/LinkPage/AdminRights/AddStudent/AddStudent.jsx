@@ -2,6 +2,7 @@ import React from 'react'
 import styles from "../AddStudent/AddStudent.module.css"
 import axios from "axios"
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 const AddStudent = () => {
 
     const [error,setError] = useState("")
@@ -22,13 +23,14 @@ const AddStudent = () => {
       return  showError("Fill all Details")
     }
 
-    axios.post("https://library-management-fullstack.onrender.com/api/register",{
+  axios.post("https://library-management-fullstack.onrender.com/api/register",{
        Name:Name.value,
        FatherName:fatherName.value,
        RollNo:rollNo.value,
        SeatNo:seatNo.value
     })
     .then(({data})=>{
+      
         showError(data.message)
         Name.value = ""
         fatherName.value = ""
@@ -45,16 +47,17 @@ const AddStudent = () => {
 
     return (
       <div className={styles.mainContainer}>
-        
+         {error && <div className={styles.error}>{error}</div>}
       <form onSubmit={(e)=>{addStudent(e)
         
       }}>
         <p>Enter Details</p>
-        {error && <div className={styles.error}>{error}</div>}
+       
         <input name='Name' placeholder='name' type='text' required></input>
         <input name='fatherName' placeholder='FatherName' type='text' required></input>
         <input name='rollNo' placeholder='RollNo' type='text' required></input>
         <input name='seatNo' placeholder='SeatNO' type='text' required></input>
+        <h4>Tap to see available seats? <Link className={styles.check} to="/Admin/seatAvalable">click here.</Link></h4>
         <button type='submit'>Create Student</button>
       </form>
     </div>

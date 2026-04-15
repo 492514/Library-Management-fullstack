@@ -9,24 +9,21 @@ const Studentdashboard = () => {
  
 
 const [allStudents, setallStudents] = useState([])
-const [error,setError] = useState("")
+
 const [searchStd, setsearchStd] = useState("")
-const [filterStd, setfilterStd] = useState([])
 
-function showError(message){
-  setError(message)
 
-  setTimeout(()=>{
-    setError("")
-  },3000)
-}
+
 
 function getAllStudent(){
+ 
  axios.get("https://library-management-fullstack.onrender.com/api/allusers")
  .then((res)=>{
-  
+
    setallStudents(res.data.studentFind)
+  
  })
+ 
  .catch((err)=>{
    console.log(err)
  })
@@ -36,35 +33,32 @@ useEffect(()=>{
   getAllStudent()
 },[])
 
+
 function getEntryTime(id){
   axios.post(`https://library-management-fullstack.onrender.com/api/entry/${id}`)
     .then((res)=>{
+      const newEntryTime = res.data.attendance.entryTime;
       
-     
-      const newEntryTime = res.data.attendance.entryTime
-      
-      setallStudents((prev) =>
+   setallStudents((prev) =>
         prev.map((student) =>
           student._id === id
             ? { ...student, entryTime: newEntryTime }
             : student
         )
       )
-       showError(res.data.message)
-       setsearchStd("")
+       
+
     })
     .catch((err)=>{
-      showError(err.response?.data?.message || err.message)
+      console.log(err.response?.data?.message || err.message)
     })
 }
 
 function getExitTime(id){
+  
 axios.post(`https://library-management-fullstack.onrender.com/api/exit/${id}`)
    .then((res)=>{
-   
-     
       const newExitTime = res.data.attendance.exitTime
-
       setallStudents((prev) =>
         prev.map((student) =>
           student._id === id
@@ -72,48 +66,39 @@ axios.post(`https://library-management-fullstack.onrender.com/api/exit/${id}`)
             : student
         )
       )
-      showError(res.data.message)
-      setsearchStd("")
+      
+      
     })
     .catch((err)=>{
-      showError(err.response?.data?.message || err.message)
+      console.log(err.response?.data?.message || err.message)
     })
 }
 
 function formatTime(time) {
   if (!time) return ""
+  
   return new Date(time).toLocaleTimeString([], {
     hour: "2-digit",
     minute: "2-digit"
   })
 }
 
-function SearchRollNo(value){
-if(value === ""){
-  setfilterStd([])
-  return 
-}
-  const result = allStudents.filter((student)=>{
-   return student.RollNo.toString() === value
-   
-  })
-  
-  setfilterStd(result)
-  
-}
 
+ const filterData =   allStudents.filter((student)=>{
+   return student.RollNo.toString().includes(searchStd)
+ })
+ 
 
+const dataRender = searchStd ? filterData : allStudents;
 
 return (
   <div className={styles.container}>
+       
     <input
       type="text"
       placeholder="Search"
-      
       onChange={(e) => {
-       
         setsearchStd(e.target.value)
-        SearchRollNo(e.target.value)
       }}
       value={searchStd}
     />
@@ -129,53 +114,9 @@ return (
       </thead>
 
       <tbody>
-        {error && (
-          <tr>
-            <td colSpan="4">
-              <div className={styles.error}>{error}</div>
-            </td>
-          </tr>
-        )}
-
-        {searchStd === "" ? (
-          
-          allStudents.map((student) => (
-            <tr key={student._id}>
-              <td>{student.Name}</td>
-              <td>{student.RollNo}</td>
-              <td>
-                {student.entryTime ? (
-                  formatTime(student.entryTime)
-                ) : (
-                  <button
-                    className={styles.entryBtn}
-                    onClick={() => {
-                      
-                      getEntryTime(student._id)
-                    }}
-                  >
-                    Entry
-                  </button>
-                )}
-              </td>
-              <td>
-                {student.entryTime && student.exitTime ? (
-                  formatTime(student.exitTime)
-                ) : (
-                  <button
-                    className={styles.exitBtn}
-                    onClick={() => {
-                      getExitTime(student._id)
-                    }}
-                  >
-                    Exit
-                  </button>
-                )}
-              </td>
-            </tr>
-          ))
-        ) : filterStd.length ? (
-          filterStd.map((student) => (
+  
+        { dataRender.length  ? (
+          dataRender.map((student) => (
             <tr key={student._id}>
               <td>{student.Name}</td>
               <td>{student.RollNo}</td>
@@ -194,7 +135,7 @@ return (
                 )}
               </td>
               <td>
-                {student.entryTime && student.exitTime ? (
+                {student.entryTime && student.exitTime  ? (
                   formatTime(student.exitTime)
                 ) : (
                   <button
@@ -205,6 +146,7 @@ return (
                   >
                     Exit
                   </button>
+                
                 )}
               </td>
             </tr>

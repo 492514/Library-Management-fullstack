@@ -22,6 +22,7 @@ const DeleteStudent = () => {
 function getAllStudent(){
   axios.get("https://library-management-fullstack.onrender.com/api/allusers")
   .then(({data})=>{
+   
     setallStudents(data.studentFind)
    
   })
@@ -57,22 +58,22 @@ if (value === ""){
     return 
 }
 
-  return user.RollNo.toString() === value;
+  return user.RollNo.toString().includes(value);
 })
 
    setfilterStudent(result)
 }
 
  return (
-  <div className={styles.mainContainer}>
+  <div className={styles.Container}>
      {error && <div className={styles.error}>{error}</div>}
     <input required value={searchStd} className={styles.searchInput} type="text" placeholder='Search RollNo...'
     onChange={(e)=>{setsearchStd(e.target.value)
       searchStudent(e.target.value)
     }}
      />
-     
-    <table className={styles.table}>
+     <div className={styles.tableWrapper}>
+    <table className={styles.studentTable}>
       <thead>
         <tr>
           <th>Name</th>
@@ -158,6 +159,7 @@ if (value === ""){
     </div>
   </div>
 )}
+  </div>
   </div>
 );
 }

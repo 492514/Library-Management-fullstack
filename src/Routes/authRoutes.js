@@ -1,60 +1,62 @@
-require('dotenv').config();
-const express = require("express")
-const authRoutes = express.Router();
+const express = require("express");
+const authRoutes = express.Router()
 const adminLogin = require("../models/AdminLogin")
 const student = require("../models/student")
 const attendance = require("../models/attendance")
+const seat = require("../models/seatAvalable")
 const jwt = require('jsonwebtoken')
-const crypto = require("crypto"); 
-
+const crypto = require("crypto")
 
 authRoutes.post('/register', async(req,res)=>{
 
 const {Name,FatherName,RollNo,SeatNo} = req.body;
 
 const isRollnoAvalable = await student.findOne({RollNo})
+if(RollNo > 200 || RollNo < 1){
+    return res.status(409).json({
+        message:"Choose rollno 1 to 200"
+    })
+}
 if(isRollnoAvalable){
     return res.status(409).json({
         message:" RollNo already Registered"
     })
 }
 
+const seatData = await seat.findOne({ seatNo:SeatNo })
+if(!seatData){
+    return res.status(400).json({
+        message:"seat not found"
+    })
+}
+
+if(seatData.isBooked){
+    return res.status(409).json({
+        message: "Seat already booked"
+    })
+}
 
 const users = await student.create({
-Name,FatherName,RollNo,SeatNo
+Name,
+FatherName,
+RollNo,
+SeatNo
 })
+
+seatData.isBooked = true;
+seatData.bookedBy = users._id;
+await seatData.save()
 
 res.status(201).json({
     message:" Student Register Sucessfully",
-    users:users
+    
 })
 })
 
 authRoutes.post("/entry/:id", async(req,res) =>{
 try{
     const studentId = req.params.id
-     const today = new Date().toLocaleDateString("en-CA")
-
-
-    let studentFind = await student.findById(studentId)
-
-    if(!studentFind){
-      return  res.status(404).json({
-            message: "Student Not Found"
-        })
-    }
-
-     const alreadyEntry = await attendance.findOne({
-        studentId:studentId,
-        date:today
-     })
-
-     if(alreadyEntry){
-       return res.status(409).json({
-            message: "You are already Entered today",
-
-        })
-     }
+     const today = new Date().toLocaleDateString("en-CA");
 
      const newAttandance = await attendance.create({
         studentId:studentId,
@@ -81,44 +83,31 @@ try{
      const today = new Date().toLocaleDateString("en-CA")
 
 
-
-    const studentFind = await student.findById(studentId)
-
-    if(!studentFind){
-        return res.status(404).json({
-            sucess:false,
-            message: "Student not Found",
-
-        })
-    }
-
-     const alreadyExit = await attendance.findOne({
+     const record = await attendance.findOne({
         studentId:studentId,
         date: today
      })
 
-     if(!alreadyExit){
+     if(!record){
       return  res.status(400).json({
         sucess:false,
             message: "First Make Entry"
         })
      }
 
-     if(alreadyExit.exitTime){
-      return  res.status(409).json({
-        sucess:false,
-        message: "Already Exit today",
-        alreadyExit:alreadyExit
-      })
+     if(record.exitTime){
+        return res.status(409).json({
+            message:"already exit"
+        })
      }
-
-     alreadyExit.exitTime = new Date()
-     alreadyExit.save()
+      
+     record.exitTime = new Date()
+     await record.save()
 
      res.status(200).json({
         sucess:true,
         message: "Exit Sucess",
-        attendance:alreadyExit
+        attendance:record
      })
 } catch(error){
     res.status(500).json({
@@ -131,49 +120,23 @@ try{
 
 authRoutes.delete("/remove-user/:id", async(req,res) =>{
 const userId = req.params.id
-const deleteUser = await student.findByIdAndDelete(userId)
+
 const deleteAttendance = await attendance.deleteMany({studentId:userId})
+
+const seatData = await seat.findOne({bookedBy:userId})
+
+if(seatData){
+    seatData.isBooked = false,
+    seatData.bookedBy = null,
+    await seatData.save()
+}
+ await student.findByIdAndDelete(userId)
 res.status(200).json({
     messege:"Student Deleted Sucessfully",
-    deleteUser,
-    deleteAttendance
+    attendanceDeleted:deleteAttendance,
 })
 })
 
-authRoutes.get("/allusers",async(req,res) =>{
-try{
-    const today = new Date().toISOString().split("T")[0]
-    const students =await student.find()
-
-    const finalData = await Promise.all(
-        students.map(async (student) => {
-           const Attendance = await attendance.findOne({
-            studentId:student._id,
-             date:today
-           })
-
-           return {
-            ...student._doc,
-            entryTime: Attendance ? Attendance.entryTime : null,
-            exitTime: Attendance ? Attendance.exitTime : null
-           }
-        })
-    )
-      return res.status(201).json({
-       sucess:true,
-       studentFind: finalData
-      })
-}
-catch(error){
-    console.log(error.message)
-    return res.status(500).json({
-      success: false,
-      message: "Server error in get all users API"
-    })
-  
-}
-
-})
 
 authRoutes.get("/Attendance", async(req,res) =>{
     try{
@@ -274,4 +237,44 @@ authRoutes.get("/Admin/Verify", async(req,res)=>{
     }
 })
 
+authRoutes.get("/available/seats", async(req,res) =>{
+try{
+    
+   
+    const occupiedSeats = await seat.countDocuments({isBooked:true});
+    const availableSeats = await seat.countDocuments({isBooked:false});
+   const allSeats = await seat.find({}).select("seatNo isBooked -_id");
+    
+    
+        return res.status(200).json({
+            availableSeat:availableSeats,
+            occupiedSeats:occupiedSeats,
+            allSeats:allSeats,
+            
+        })
+    
+
+} catch(error){
+    res.status(500).json({
+        message:"Server Error",
+        error:error
+    })
+}
+})
+
+authRoutes.get("/occupied/seats", async(req,res) =>{
+    try{
+       const occupiedSeats = await seat.find({isBooked:true}).populate("bookedBy")
+       
+     return res.status(200).json({
+        message:"occupied seats fetched",
+        occupiedSeats:occupiedSeats
+       })
+    }catch(error){
+    return res.status(500).json({
+        message:"server Error",
+        error:error.message
+     })
+    }
+})
 module.exports = authRoutes

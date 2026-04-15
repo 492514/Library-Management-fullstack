@@ -27,7 +27,14 @@ const navigate = useNavigate();
           navigate("/Admin/Attendance")
         }}
         >
-        Attaendance</button>
+        Attendance</button>
+
+         <button className={styles.btn}
+         onClick={() =>{
+          navigate("/Admin/seatAvalable")
+        }}>
+          Available seats
+          </button>
       </div>
     </div>
   )
