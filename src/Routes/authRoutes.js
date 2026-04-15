@@ -137,6 +137,44 @@ res.status(200).json({
 })
 })
 
+authRoutes.get("/allusers",async(req,res) =>{
+
+try{
+    
+    const today = new Date().toISOString().split("T")[0]
+   
+    const students =await student.find()
+    const finalData = await Promise.all(
+        students.map(async (student) => {
+           const Attendance = await attendance.findOne({
+            studentId:student._id,
+             date:today
+           })
+
+           return {
+            ...student._doc,
+            entryTime: Attendance ? Attendance.entryTime : null,
+            exitTime: Attendance ? Attendance.exitTime : null
+           }
+           
+        })
+    )
+   
+      return res.status(201).json({
+       sucess:true,
+       studentFind: finalData
+      })
+}
+catch(error){
+    console.log(error.message)
+    return res.status(500).json({
+      success: false,
+      message: "Server error in get all users API"
+    })
+  
+}
+
+})
 
 authRoutes.get("/Attendance", async(req,res) =>{
     try{
