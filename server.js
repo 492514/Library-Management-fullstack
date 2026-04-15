@@ -1,11 +1,11 @@
 const mongoose = require("mongoose")
 const database = require('./src/config/database')
 const app = require("./src/app")
+const PORT = process.env.PORT || 3000;
 
-console.log("📍 Server.js starting...")
 
 database()
-app.listen(3000,()=>{
-    console.log('running on 3000 port')
-    console.log("📍 Server ready - hit /api/test to test")
+app.listen(PORT,()=>{
+    console.log(`server runnig on ${PORT}`)
+   
 })
