@@ -6,30 +6,64 @@
 
 html,body{
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-   background: linear-gradient(135deg, #dbeafe, #eff6ff, #ffffff);
+  background: #3a3a3a;
 }
 
 .container{
-  width: 100%;
-  padding: 20px;
+  background: #1a3c5e;
+  min-height: 100vh;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, sans-serif;
+}
+
+.Content{
+  background: #23272f;
+  border-radius: 20px 20px 0 0;
+  min-height: calc(100vh - 68px);
+  padding: 14px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-   background: linear-gradient(135deg, #dbeafe, #eff6ff, #ffffff);
+  gap: 10px;
 }
+
+.header {
+  padding: 16px;
+  display: flex;
+  align-items: center;
+
+  display: grid;
+  text-align: left;
+
+}
+
+.header h2 {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0 0 2px;
+}
+.header p {
+  color: rgba(255,255,255,0.6);
+  font-size: 11px;
+  margin: 0;
+}
+
 
 .container input{
   width: 100%;
-  max-width: 350px;
+  color: white;
   padding: 12px 14px;
-  border: 1px solid #ccc;
+ border: 1px solid #636363;
   border-radius: 8px;
   outline: none;
   font-size: 16px;
   font-weight: 500;
   transition: 0.3s ease;
+  background: transparent;
 }
 
+.container input::placeholder{
+  color:#9e9e9e ;
+}
 .container input:focus{
    border-color: #2563eb;
    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
@@ -39,36 +73,39 @@ html,body{
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
-  background: #fff;
+  
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
   border-radius: 8px;
   overflow: hidden;
+  background: transparent;
 }
 
 .studentTable thead {
-  background-color: #14389a;
+  background-color: #1a3c5e;
   color: white;
 }
 
 .studentTable th,
 .studentTable td {
-  border: 1px solid #000000;
+ border: 1px solid #636363;
   padding: 12px 15px;
   text-align: center;
+  color: white;
+  background: transparent;
 }
 
-.studentTable tbody tr:nth-child(even) {
-  background-color: #f8f9fa;
-}
+/* .studentTable tbody tr:nth-child(even) {
+  background:transparent;
+} */
 
 .studentTable tbody tr:hover {
-  background-color: #eaf4ff;
+  color: white;
   transition: 0.3s;
 }
 
 .studentTable td {
   font-size: 15px;
-  color: #333;
+  color: white;
 }
 
 .studentTable th {
@@ -76,8 +113,9 @@ html,body{
   font-weight: 600;
 }
 .entryBtn{
-  background:#4cdd2f;
-  border:none;
+  background:rgb(71, 130, 71);
+  outline: none;
+   border: 1px solid #666;
   padding:6px 10px;
   border-radius:6px;
   cursor:pointer;
@@ -92,8 +130,9 @@ html,body{
 }
 
 .exitBtn{
-  background:#dc2c2c;
-  border:none;
+   background:rgb(154, 59, 59);
+  outline: none;
+   border: 1px solid #666;
   padding:6px 10px;
   border-radius:6px;
   cursor:pointer;
@@ -107,19 +146,7 @@ html,body{
   transform:scale(1.05);
 }
 
-.error{
-  position: fixed;
-  top: 10px;
-  display: flex;
-  align-items: center;
-  background: #ffffffde;
-  color: rgb(16, 63, 133);
-  padding: 12px 20px;
-  border-radius: 6px;
-  font-weight: 700;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-  animation: slideIn 0.3s ease;
-}
+
 
 @keyframes slideIn {
   from {
@@ -129,5 +156,11 @@ html,body{
   to {
     transform: translateY(0);
     opacity: 1;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container input {
+   width: 100%;
   }
 }

@@ -7,118 +7,135 @@
 html,body{
     height: 100%;
     width: 100%;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-   background: linear-gradient(135deg, #dbeafe, #eff6ff, #ffffff);
-}
-
-.mainContainer {
-  width: 100%;
-  min-height: 100vh;
-  padding: 20px 12px;
-  background: #f4f7fb;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-
-.topBoxContainer {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr; 
-  gap: 14px;
-}
-
-.availableBox,
-.occupiedBox {
-  width: 100%;
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 18px 14px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-  text-align: center;
-}
-
-.availableBox h3,
-.occupiedBox h3 {
-  font-size: 16px;
-  font-weight: 600;
-  color: #222;
-  margin-bottom: 8px;
-}
-
-.availableBox p,
-.occupiedBox p {
-  font-size: 28px;
-  font-weight: 700;
-  margin: 0;
-}
-
-
-.availableBox {
-  border-left: 6px solid #22c55e;
-  border-right: 6px solid #22c55e;
-}
-
-.availableBox p {
-  color: #16a34a;
-}
-
-.occupiedBox {
-  border-left: 6px solid #ef4444;
-  border-right: 6px solid #ef4444;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.occupiedBox p {
-  color: #dc2626;
-}
-
-.link{
-  color: #000000;
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-}
-
-.container {
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr); 
-  gap: 12px;
-  background: #ffffff;
-  padding: 16px;
-  border-radius: 16px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-}
-
-.container button {
-  border: none;
-  outline: none;
-  padding: 8px 6px;
-  border-radius: 5px;
-  border: 1.5px solid #009749; 
-  color: rgb(0, 0, 0);
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s ease;
-  min-height: 5px;
-}
-
-.container button:hover:not(:disabled) {
-  transform: translateY(-2px);
   
 }
 
-.container button:disabled {
-   border: 1.5px solid black;
-    background: #b7b1b1;
-  cursor: not-allowed;
-  opacity: 0.9;
+.mainContainer {
+ background: #1a3c5e;
+  min-height: 100vh;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, sans-serif;
+ 
 }
 
+
+
+/* header bar */
+.header {
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  
+}
+
+/* title */
+.header p {
+   color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0 0 2px;
+}
+
+/* back button */
+
+
+/* top container */
+.topBoxContainer {
+  display: flex;
+  gap: 12px;
+  padding: 15px;
+  
+}
+
+/* common box style */
+.availableBox,
+.occupiedBox {
+  flex: 1;
+ background: #2c3240;
+  border-radius: 12px;
+  padding: 15px;
+}
+
+/* number styling */
+.availableBox p {
+  color: #22c55e; /* green */
+  font-size: 22px;
+  font-weight: 600;
+  margin-top: 5px;
+}
+
+.occupiedBox p {
+  color: #ef4444; /* red */
+  font-size: 22px;
+  font-weight: 600;
+  margin-top: 5px;
+}
+
+/* headings */
+.availableBox h3,
+.occupiedBox h3 {
+  color: #ccc;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+/* link text */
+.occupiedBox h4 {
+  margin-top: 8px;
+  font-size: 11px;
+  color: #aaa;
+}
+
+
+
+.container {
+  
+  display: flex;
+  flex-direction: column;
+  
+  background: #23272f;
+  border-radius: 20px 20px 0 0;
+  min-height: calc(100vh - 68px);
+  padding: 14px;
+  gap: 10px;
+ 
+}
+
+.detailContainer{
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+ padding: 14px;
+  gap: 10px;
+  border-top: 1px solid #636363;
+}
+
+/* default seat */
+.container button {
+  padding: 12px;
+  border-radius: 7px;
+  border: 1px solid #a5a5a5;
+  background: transparent;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* available seat style */
+.container button:not(:disabled) {
+  background: transparent;
+  border: none;
+  border: 1px solid #a1a1a1;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+/* occupied seat */
+.container button:disabled {
+  background: #c06666;
+  color: #ffffff;
+  border: 1px solid #444;
+  cursor: not-allowed;
+}
 
 /* Tablet */
 @media (min-width: 600px) {
@@ -155,19 +172,16 @@ html,body{
 
 
 @media (min-width: 900px) {
-  .mainContainer {
-    max-width: 1200px;
-    margin: auto;
-    padding: 30px 20px;
+ 
+  .header{
+    width: 100%;
   }
 
-  .topBoxContainer {
-    gap: 20px;
-  }
+
 
   .availableBox,
   .occupiedBox {
-    padding: 24px 20px;
+    padding: 20px 20px;
     border-radius: 18px;
   }
 
@@ -182,7 +196,7 @@ html,body{
   }
 
   .container {
-    grid-template-columns: repeat(10, 1fr);
+    grid-template-columns: repeat(8, 1fr);
     gap: 16px;
     padding: 24px;
   }

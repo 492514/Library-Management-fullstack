@@ -7,37 +7,81 @@
 html,body{
     height: 100%;
     width: 100%;
-    background: linear-gradient(135deg, #dbeafe, #eff6ff, #ffffff);
+     background: #23272f;
 }
-.Container{
-    height: 100vh;
-    gap: 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-     background: linear-gradient(135deg, #dbeafe, #eff6ff, #ffffff);
-   
-}
-.Container p{
-    color: #1e3a8a;
-     font-size: clamp(2rem, 4vw, 2.5rem);
-    font-weight: 700;
+/* Full screen center */
+.wrapper {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #23272f;
 }
 
-.btn{
-    height: 6vh;
-    width: 70vw;
-    max-width: 240px;
-    cursor: pointer;
-    font-size: large;
-    font-weight: 700;
-    color: #f1f5f9;
-    border: none;
-    border-radius: 0.5rem;  
-    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+/* Main container */
+.card {
+  width: 320px;
+  padding: 20px;
+  border-radius: 10px;
+  /* background: linear-gradient(145deg, #2c2c2c, #1e1e1e); */
+  /* box-shadow: 0 0 20px rgba(255, 255, 255, 0.05); */
+  text-align: center;
 }
 
-.btn button:hover{
-  background:#2f80ed;
+
+
+/* blue card */
+.innerCard {
+  background: #1a3c5e;
+  padding: 25px 15px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  color: white;
+}
+
+/* icon circle */
+.icon {
+  width: 50px;
+  height: 50px;
+  margin: 0 auto 10px;
+  background: rgba(255, 255, 255, 0.911);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+
+/* heading */
+.innerCard h2 {
+  margin: 5px 0;
+  font-size: 20px;
+}
+
+/* subtitle */
+.innerCard p {
+  font-size: 15px;
+  color: #ddd;
+  font-weight: 400;
+}
+
+/* buttons */
+.outlineBtn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  border-radius: 10px;
+  border: 1px solid #636363;
+  background: transparent;
+  color: white;
+  font-size: 16px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* hover effect */
+.outlineBtn:hover {
+  background: #242424;
+  border-color: #aaa;
 }

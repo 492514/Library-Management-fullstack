@@ -23,51 +23,54 @@ allSeats()
 },[])
 
 const dataFilter = occupiedSeats.filter((seat)=>{
-return seat.seatNo.toString() === seatSearch
+return seat.seatNo.toString().includes(seatSearch)
 })
 
 const dataShow = seatSearch ? dataFilter : occupiedSeats;
 
 return (
     
- <div className={styles.Container}>
-  <p className={styles.heading}>Occupied Seats</p>
- <input type="text"
-  placeholder='Search seats...'
-  className={styles.searchInput}
-  onChange={(e)=>{setseatSearch(e.target.value)}}
-   />
-
-    <table className={styles.studentTable}>
-      <thead>
-        <tr>
-          <th>Seat No</th>
-          <th>Name</th>
-          <th>Father Name</th>
-          <th>Roll No</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        {dataShow.length ? (dataShow.map((val, index) => (
-          <tr key={index}>
-            
-            <td>{val.bookedBy?.Name}</td>
-            <td>{val.bookedBy?.FatherName}</td>
-            <td>{val.bookedBy?.RollNo}</td>
-            <td>{val.seatNo}</td>
-          </tr>
-        ))
-      ):(
-          <tr>
-            <td colSpan="4" className={styles.error}>No Seat Found</td>
-          </tr>
-        
-      )
-    }
-      </tbody>
-    </table>
+<div className={styles.Container}>
+    <div className={styles.header}>
+  
+    <p>Occupied Seats</p>
   </div>
+
+<div className={styles.mainContainer}>
+  <div  className={styles.searchInputBox}>
+    <input
+    type="text"
+    placeholder="Search seats..."
+    className={styles.searchInput}
+    onChange={(e) => setseatSearch(e.target.value)}
+  />
+</div>
+
+<div className={styles.detailBox}>
+    <div className={styles.seatGrid}>
+    {dataShow.length ? (
+      dataShow.map((val, index) => (
+        <div key={index} className={styles.seatCard}>
+          
+          <div className={styles.seatNo}>
+            {`seat- ${val.seatNo}`}
+          </div>
+
+          <div className={styles.studentInfo}>
+            <p><strong>{val.bookedBy?.Name}</strong></p>
+            <p>{val.bookedBy?.FatherName}</p>
+            <p>Roll: {val.bookedBy?.RollNo}</p>
+          </div>
+
+        </div>
+      ))
+    ) : (
+      <p className={styles.error}>No Seat Found</p>
+    )}
+  </div>
+</div>
+</div>
+</div>
 
    
   )

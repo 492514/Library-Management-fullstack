@@ -16,7 +16,6 @@ const [searchStd, setsearchStd] = useState("")
 
 
 function getAllStudent(){
- 
  axios.get('https://library-management-fullstack.onrender.com/api/allusers')
  .then((res)=>{
 
@@ -84,7 +83,7 @@ function formatTime(time) {
 }
 
 
- const filterData =   allStudents.filter((student)=>{
+ const filterData =   (allStudents || []).filter((student)=>{
    return student.RollNo.toString().includes(searchStd)
  })
  
@@ -93,10 +92,14 @@ const dataRender = searchStd ? filterData : allStudents;
 
 return (
   <div className={styles.container}>
-       
-    <input
+         <div className={styles.header}>
+           <h2>Students</h2>
+           <p>make entry/exit</p>
+         </div>
+  <div className={styles.Content}>
+      <input
       type="text"
-      placeholder="Search"
+      placeholder="Search by Rollno..."
       onChange={(e) => {
         setsearchStd(e.target.value)
       }}
@@ -158,6 +161,7 @@ return (
         )}
       </tbody>
     </table>
+  </div>
   </div>
 )
 

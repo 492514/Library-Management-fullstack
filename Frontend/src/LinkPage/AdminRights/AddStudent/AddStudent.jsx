@@ -46,21 +46,47 @@ const AddStudent = () => {
     
 
     return (
-      <div className={styles.mainContainer}>
-         {error && <div className={styles.error}>{error}</div>}
-      <form onSubmit={(e)=>{addStudent(e)
-        
-      }}>
-        <p>Enter Details</p>
-       
-        <input name='Name' placeholder='name' type='text' required></input>
-        <input name='fatherName' placeholder='FatherName' type='text' required></input>
-        <input name='rollNo' placeholder='RollNo' type='text' required></input>
-        <input name='seatNo' placeholder='SeatNO' type='text' required></input>
-        <h4>Tap to see available seats? <Link className={styles.check} to="/Admin/seatAvalable">click here.</Link></h4>
-        <button type='submit'>Create Student</button>
-      </form>
-    </div>
+    <div className={styles.container}>
+
+
+  <div className={styles.header}>
+    
+    <p>Add student</p>
+  </div>
+
+
+  <div className={styles.formContainer}>
+    
+    {error && <div className={styles.error}>{error}</div>}
+
+    <form onSubmit={(e)=>{addStudent(e)}}>
+
+      <label>Full name</label>
+      <input name='Name' placeholder='name' type='text' required />
+
+      <label>Father name</label>
+      <input name='fatherName' placeholder='FatherName' type='text' required />
+
+      <label>Roll number</label>
+      <input name='rollNo' placeholder='RollNo' type='text' required />
+
+      <label>Seat number</label>
+      <input name='seatNo' placeholder='SeatNO' type='text' required />
+
+      <h4>
+        Tap to see available seats? 
+        <Link className={styles.check} to="/Admin/seatAvailability">
+          click here.
+        </Link>
+      </h4>
+
+      <button type='submit' className={styles.submitBtn}>
+        Register student
+      </button>
+
+    </form>
+  </div>
+</div>
   )
 }
 

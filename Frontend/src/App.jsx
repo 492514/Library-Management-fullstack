@@ -21,10 +21,10 @@ const App = () => {
         <Route path='/Admin/Dashboard'
          element={<ProtectedRoute><AdminRights /></ProtectedRoute>}
           />
-        <Route path='/Admin/Add-Student' element={<ProtectedRoute><AddStudent /></ProtectedRoute>} />
-        <Route path='/Admin/Delete-Student' element={<ProtectedRoute><DeleteStudent /></ProtectedRoute>} />
-        <Route path='/Admin/Attendance' element={<ProtectedRoute><StudentHistory /></ProtectedRoute>} />
-        <Route path='/Admin/seatAvalable' element={<ProtectedRoute><SeatAvalable /></ProtectedRoute>} />
+        <Route path='/Admin/addStudent' element={<ProtectedRoute><AddStudent /></ProtectedRoute>} />
+        <Route path='/Admin/deleteStudent' element={<ProtectedRoute><DeleteStudent /></ProtectedRoute>} />
+        <Route path='/Admin/attendance' element={<ProtectedRoute><StudentHistory /></ProtectedRoute>} />
+        <Route path='/Admin/seatAvailability' element={<ProtectedRoute><SeatAvalable /></ProtectedRoute>} />
         <Route path='/Admin/occupiedSeats' element={<ProtectedRoute><OccupiedSeats /></ProtectedRoute>} />
         <Route path='/Student' element={<Studentdashboard />} />
       </Routes>

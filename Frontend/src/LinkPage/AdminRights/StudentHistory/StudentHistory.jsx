@@ -5,46 +5,28 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 
 
-const StudentHistory = () => {
+import { useNavigate } from 'react-router-dom'
 
-const [Group, setGroup] = useState({})
-const [openDate, setopenDate] = useState(null)
-const [error, setError] = useState("")
+ function AttendanceHistory() {
 
-  function showError(message) {
-    setError(message)
-    setTimeout(() => {
-      setError("")
-    }, 3000)
+  const navigate = useNavigate()
+
+  const [selectedDate, setSelectedDate] = useState(
+    new Date().toISOString().split('T')[0]
+  )
+  const [allAttendance, setallAttendance] = useState([])
+
+  function attendanceHistory(){
+   axios.get("https://library-management-fullstack.onrender.com/api/Attendance")
+   .then((res)=>{
+    
+        setallAttendance(res.data.attendanceHistory)
+   }).catch((error)=>{
+        console.log("error hai bhai")
+   })
   }
 
-function getAttendance(){
-    axios.get("https://library-management-fullstack.onrender.com/api/Attendance")
-    .then((res)=>{
-     const data = res.data.attendanceHistory
-     
-     const result = data.reduce((acc,item)=>{
-      if(!acc[item.date]){
-        acc[item.date] = []
-      }
-      acc[item.date].push(item)
-      return acc
-     },{})
-     setGroup(result)
-    }).catch((err)=>{
-       showError(err.response?.data?.message || err.message)
-    })
-}
-  
-function toggleBox(date){
-if(openDate === date){
-    setopenDate(null)
-}else{
-    setopenDate(date)
-}
-}
-
-  function formatTime(time) {
+    function formatTime(time) {
     if (!time) return ""
     return new Date(time).toLocaleTimeString([], {
       hour: "2-digit",
@@ -52,63 +34,82 @@ if(openDate === date){
     })
   }
 
-useEffect(()=>{
-    getAttendance()
-},[])
+  useEffect(()=>{
+    attendanceHistory()
+  },[])
 
+  const getInitials = (name) =>
+    name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
 
+  const getStatus = (val) => {
+    if (!val.entryTime) return 'absent'
+    if (val.entryTime && !val.exitTime) return 'inside'
+    return 'exited'
+  }
 
- return (
-    <div className={styles.historyContainer}>
-      <h2 className={styles.heading}>Attendance History</h2>
+  const filteredAttendance = allAttendance.filter(
+    (a) => a.date === selectedDate 
+  )
 
-      {error && <p className={styles.error}>{error}</p>}
+  return (
+    <div className={styles.page}>
 
-      {Object.keys(Group).length > 0 ? (
-        Object.keys(Group).map((date) => (
-          <div key={date} className={styles.dateBox}>
-            <div
-              className={styles.dateHeader}
-              onClick={() => toggleBox(date)}
-            >
-              <span>{date}</span>
-              <span>{openDate === date ? "▲" : "▼"}</span>
+      {/* Topbar */}
+      <div className={styles.topbar}>
+        
+        <div className={styles.topbarInfo}>
+          <h2>Attendance history</h2>
+          <p>{new Date(selectedDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</p>
+        </div>
+      </div>
+
+      <div className={styles.content}>
+
+        {/* Date input */}
+        <input
+          className={styles.dateInp}
+          type="date"
+          value={selectedDate}
+          onChange={(e) => setSelectedDate(e.target.value)}
+        />
+
+        {/* Cards */}
+        {filteredAttendance.length > 0 ? filteredAttendance.map((val, i) => {
+          const status = getStatus(val)
+          return (
+            <div key={i} className={styles.aCard}>
+              <div className={styles.avatar}
+                style={{ background: val.avatarBg || '#7ea3c8', color: val.avatarColor || '#00376d' }}>
+                {getInitials(val.studentName)}
+              </div>
+              <div className={styles.aInfo}>
+                <div className={styles.aName}>{val.studentName}</div>
+                <div className={styles.aMeta}>
+                  {status === 'absent'
+                    ? 'No entry today'
+                    : status === 'inside'
+                    ? `Entry ${formatTime(val.entryTime)}`
+                    : `Entry ${formatTime(val.entryTime)} · Exit ${formatTime(val.exitTime)}`}
+                </div>
+              </div>
+              <span className={`${styles.badge} ${
+                status === 'inside'  ? styles.bIn :
+                status === 'exited'  ? styles.bOut :
+                styles.bAbsent
+              }`}>
+                {status === 'inside' ? 'In' : status === 'exited' ? 'Out' : 'Absent'}
+              </span>
             </div>
+          )
+        }) : (
+          <div className={styles.empty}>No records for this date</div>
+        )}
 
-            {openDate === date && (
-             <div
-          className={`${styles.tableWrapper} ${
-               openDate === date ? styles.open : styles.closed
-            }`}>
-         <table className={styles.historyTable}>
-         <thead>
-           <tr>
-             <th>Name</th>
-             <th>Roll No</th>
-             <th>Entry</th>
-             <th>Exit</th>
-           </tr>
-        </thead>
-       <tbody>
-       {Group[date].map((student) => (
-        <tr key={student._id}>
-          <td>{student.studentName}</td>
-          <td>{student.studentRollNO}</td>
-          <td>{formatTime(student.entryTime)}</td>
-          <td>{formatTime(student.exitTime)}</td>
-        </tr>
-      ))}
-     </tbody>
-   </table>
-  </div>
-    )}
-     </div>
-    ))
-      ) : (
-        <p className={styles.noData}>No Attendance History Found</p>
-      )}
+      </div>
     </div>
   )
+
+  
 }
 
-export default StudentHistory
+export default AttendanceHistory

@@ -32,23 +32,45 @@ function login(e){
    })
    
    .catch((err)=>{
+    errorFind()
       setError(err.response?.data?.message || "Internal Server Error")
    })
 }
 
 
   return (
-    <div className={styles.Container}>
-       {error && <div className={styles.error}>{error}</div>}
-      <p>Admin Login</p>
-      
-       <form onSubmit={(e)=>{login(e),errorFind()}}>
-        <input name='Email' type="text" placeholder='Email' required />
-         <input name='Password' type="password" placeholder='Password' required/>
-        <button>LogIn</button>
-       </form>
-      
+<div className={styles.Container}>
+  
+  {/* Header */}
+  <div className={styles.header}>
+   
+    <p>Admin login</p>
+  </div>
+
+  {/* Content */}
+  <div className={styles.content}>
+
+    <div className={styles.iconBox}>
+      <span>👤</span>
     </div>
+
+    <p className={styles.subtitle}>Enter admin credentials</p>
+
+    {error && <div className={styles.error}>{error}</div>}
+
+    <form onSubmit={(e)=>{login(e)}}>
+
+      <label>Email</label>
+      <input name='Email' type="text" placeholder="admin@library.com" />
+
+      <label>Password</label>
+      <input name='Password' type="password" placeholder="••••••••" />
+
+      <button className={styles.loginBtn}>Login</button>
+
+    </form>
+  </div>
+</div>
   )
 }
 

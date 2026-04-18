@@ -278,16 +278,33 @@ authRoutes.get("/Admin/Verify", async(req,res)=>{
 authRoutes.get("/available/seats", async(req,res) =>{
 try{
     
-   
+    const today = new Date().toISOString().split("T")[0];
+
     const occupiedSeats = await seat.countDocuments({isBooked:true});
     const availableSeats = await seat.countDocuments({isBooked:false});
    const allSeats = await seat.find({}).select("seatNo isBooked -_id");
-    
-    
+  
+    const data = await attendance.find({date: today});
+
+    let presentStatus = 0;
+    let outStatus = 0;
+
+    data.forEach((item) => {
+        if (item.entryTime && item.exitTime) {
+          outStatus++;
+        } else if (item.entryTime) {
+          presentStatus++;
+        }
+      
+    });
+
+
         return res.status(200).json({
             availableSeat:availableSeats,
             occupiedSeats:occupiedSeats,
             allSeats:allSeats,
+            present: presentStatus,
+            out: outStatus,
             
         })
     
@@ -315,4 +332,15 @@ authRoutes.get("/occupied/seats", async(req,res) =>{
      })
     }
 })
+
+authRoutes.get("/present", async (req, res) => {
+  try {
+ 
+
+  } catch (err) {
+    console.log(err.message);
+  }
+});
+
+
 module.exports = authRoutes

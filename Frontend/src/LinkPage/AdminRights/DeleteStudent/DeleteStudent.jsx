@@ -65,102 +65,116 @@ if (value === ""){
 }
 
  return (
-  <div className={styles.Container}>
-     {error && <div className={styles.error}>{error}</div>}
-    <input required value={searchStd} className={styles.searchInput} type="text" placeholder='Search RollNo...'
-    onChange={(e)=>{setsearchStd(e.target.value)
-      searchStudent(e.target.value)
-    }}
-     />
-     <div className={styles.tableWrapper}>
-    <table className={styles.studentTable}>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Father Name</th>
-          <th>Roll No</th>
-          <th>Seat No</th>
-          <th>Delete</th>
-        </tr>
-      </thead>
+<div className={styles.container}>
 
-   <tbody>
-  {searchStd === "" ? (
-    allStudents.map((val) => (
-      <tr key={val._id}>
-        <td>{val.Name}</td>
-        <td>{val.FatherName}</td>
-        <td>{val.RollNo}</td>
-        <td>{val.SeatNo}</td>
-        <td>
-          <button
-            className={styles.deleteBtn}
-            onClick={() => {
-              setselectId(val._id)
-              setshowModal(true)
-            }}
-          >
-            Delete
-          </button>
-        </td>
-      </tr>
-    ))
-  ) : filterStudent.length > 0 ? (
-    filterStudent.map((val) => (
-      <tr key={val._id}>
-        <td>{val.Name}</td>
-        <td>{val.FatherName}</td>
-        <td>{val.RollNo}</td>
-        <td>{val.SeatNo}</td>
-        <td>
-          <button
-            className={styles.deleteBtn}
-            onClick={() => {
-              setselectId(val._id)
-              setshowModal(true)
-            }}
-          >
-            Delete
-          </button>
-        </td>
-      </tr>
-    ))
-  ) : (
-    <tr>
-      <td colSpan="5">Student Not Exist</td>
-    </tr>
-  )}
-</tbody>
-    </table>
+  {/* Header */}
+  <div className={styles.header}>
+    <p>Delete student</p>
+  </div>
 
-    {showModal && (
+  {/* Search */}
+  <div className={styles.content}>
+    {error && <div className={styles.error}>{error}</div>}
+
+    <input
+      required
+      value={searchStd}
+      className={styles.searchInput}
+      type="text"
+      placeholder="Search by roll no..."
+      onChange={(e) => {
+        setsearchStd(e.target.value);
+        searchStudent(e.target.value);
+      }}
+    />
+
+    <p className={styles.count}>
+      {searchStd === "" ? allStudents.length : filterStudent.length} students registered
+    </p>
+
+    {/* Student List */}
+    <div className={styles.list}>
+      {(searchStd === "" ? allStudents : filterStudent).length > 0 ? (
+        (searchStd === "" ? allStudents : filterStudent).map((val) => (
+          
+          <div key={val._id} className={styles.card}>
+
+            {/* Left */}
+            <div className={styles.left}>
+              <div className={styles.avatar}>
+                {val.Name?.charAt(0)}
+              </div>
+
+              <div>
+                <p className={styles.name}>{val.Name}</p>
+                <p className={styles.info}>
+                  Roll: {val.RollNo} · Seat {val.SeatNo}
+                </p>
+              </div>
+            </div>
+
+            {/* Right */}
+            <button
+              className={styles.deleteBtn}
+              onClick={() => {
+                setselectId(val._id);
+                setshowModal(true);
+              }}
+            >
+              Delete
+            </button>
+
+          </div>
+        ))
+      ) : (
+        <p className={styles.noData}>Student Not Exist</p>
+      )}
+    </div>
+  </div>
+
+  {/* Modal */}
+ {showModal && (
   <div className={styles.modalOverlay}>
+    
     <div className={styles.modal}>
-      <h3>Delete Student</h3>
-      <p>Are you sure you want to remove this student?</p>
 
+      {/* Icon */}
+      <div className={styles.iconBox}>🗑️</div>
+
+      {/* Title */}
+      <h2>Delete student?</h2>
+
+      {/* Description */}
+      <p className={styles.desc}>
+        Student all data will be removed.
+      </p>
+
+      
+
+      {/* Buttons */}
       <div className={styles.modalBtns}>
         <button
           className={styles.cancelBtn}
-          onClick={()=>setshowModal(false)}
+          onClick={() => setshowModal(false)}
         >
           Cancel
         </button>
 
         <button
           className={styles.confirmBtn}
-          onClick={() =>{DeleteStudent()
-            setshowModal(false)}
-          }
+          onClick={() => {
+            DeleteStudent();
+            setshowModal(false);
+          }}
         >
-          Delete
+          Yes, delete
         </button>
       </div>
+
     </div>
   </div>
 )}
-  </div>
-  </div>
+</div>
 );
 }
 

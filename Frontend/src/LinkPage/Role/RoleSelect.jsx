@@ -8,7 +8,7 @@ const navigate = useNavigate();
 const [Isauth, setIsauth] = useState(null)
 
 function verifyAdmin(){
-  axios.get("https://library-management-fullstack.onrender.com/api/Admin/verify",{withCredentials: true})
+  axios.get("http://localhost:3000/api/Admin/verify",{withCredentials: true})
   .then(()=>{
    setIsauth(true)
   })
@@ -22,23 +22,35 @@ useEffect(()=>{
 },[])
 
   return (
-    <div>
-      <div className={styles.Container}>
-        <p>Seclect Role</p>
-        <button className={styles.btn}
-         onClick={() =>{
-         Isauth ? navigate("/Admin/Dashboard") : navigate("/Admin-login")
-        }}>
-          Admin
-          </button>
-        <button className={styles.btn}
-        onClick={() =>{
-          navigate("/Student")
-        }}
-        >
-          Student</button>
-      </div>
+   <div className={styles.wrapper}>
+  <div className={styles.card}>
+    {/* <p className={styles.title}>Welcome student</p> */}
+
+    <div className={styles.innerCard}>
+      <div className={styles.icon}>🎓</div>
+      <h2>Daksh parjapti Library</h2>
+      <p>Bhiwani</p>
     </div>
+
+    <button
+      className={styles.outlineBtn}
+      onClick={() => {
+        Isauth ? navigate("/Admin/Dashboard") : navigate("/Admin-login");
+      }}
+    >
+      Admin login
+    </button>
+
+    <button
+      className={styles.outlineBtn}
+      onClick={() => {
+        navigate("/Student");
+      }}
+    >
+      Student panel
+    </button>
+  </div>
+</div>
   )
 }
 
